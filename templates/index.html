@@ -1,49 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Spam Ham Detector</title>
   <link rel="stylesheet" href="../static/css/style.css">
-
 </head>
 <body>
-<!-- partial:index.partial.html -->
+
 <div class="login-box">
   <h2>Spam Ham Detector</h2>
-  <form>
+  <form onsubmit="return false;"> <!-- Prevent default form reload -->
 
-    
-    <button id = "training" onclick="myFunction"  href="/train">
+    <!-- Train Model Button -->
+    <button type="button" id="training" onclick="myFunction()">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
-       Train Model
+      Train Model
     </button>
 
-    <!-- <button         onclick="window.open('/predict'), '_self' " > -->
-      <button onclick = "window.open('/predict', 'prediction tab')">
+    <!-- Prediction Button -->
+    <button type="button" onclick="window.open('/predict', '_self')">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
-       SpamHam Detector
+      SpamHam Detector
     </button>
   </form>
- 
+
   <footer class="footer">
-
-    <h4>Copyright &copy; <a style="color: #ffffff;" href = "https://github.com/tanishavermaa">Tanisha Verma</a></h4>
-
+    <h4>Copyright &copy;
+      <a style="color: #ffffff;" href="https://github.com/soMukh/">Soham Mukherjee</a>
+    </h4>
   </footer>
 </div>
-<!-- partial -->
-  
+
 <script>
   function myFunction() {
-    document.getElementById("training").innerHTML = "Prediction started";
+    const btn = document.getElementById("training");
+    btn.innerHTML = "<span></span><span></span><span></span><span></span>Training...";
+    
+    fetch("/train")
+      .then(response => response.text())
+      .then(data => {
+        alert(data);
+        btn.innerHTML = "<span></span><span></span><span></span><span></span>Train Model";
+      })
+      .catch(error => {
+        alert("Training failed: " + error);
+        btn.innerHTML = "<span></span><span></span><span></span><span></span>Train Model";
+      });
   }
-  </script>
-  
+</script>
+
 </body>
 </html>
